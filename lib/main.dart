@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'create_event.dart';
+import 'other_details.dart';
+import 'payment_details.dart';
 
 void main() {
   runApp(MyApp());
@@ -7,14 +10,18 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: MaterialApp(
-        home: HomePage(),
-      ),
+    return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(),
+        '/create_event': (context) => CreateEventPage(),
+        '/other_details': (context) => OtherDetailsPage(),
+        '/payment_details': (context) => PaymentDetailsPage(),
+      },
     );
   }
 }
+
 
 class HomePage extends StatelessWidget {
   @override
@@ -62,7 +69,7 @@ class HomePage extends StatelessWidget {
               SizedBox(height: 40.0),
               ElevatedButton(
                 onPressed: () {
-                  // Add your button functionality here
+                  Navigator.pushNamed(context, '/create_event');
                 },
                 child: Text(
                   'CREATE EVENT',
