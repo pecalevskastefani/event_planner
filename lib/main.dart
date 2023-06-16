@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'create_event.dart';
-import 'other_details.dart';
-import 'payment_details.dart';
+import 'customViews/CustomPrimaryButton.dart';
+import 'screens/createEvent/create_event.dart';
+import 'screens//eventOtherDetails/other_details.dart';
+import 'screens/paymentDetails/payment_details.dart';
 
 void main() {
   runApp(MyApp());
@@ -67,19 +68,11 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 40.0),
-              ElevatedButton(
+              CustomButton(
+                text: 'CREATE EVENT',
                 onPressed: () {
                   Navigator.pushNamed(context, '/create_event');
                 },
-                child: Text(
-                  'CREATE EVENT',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.pinkAccent,
-                ),
               ),
             ],
           ),
