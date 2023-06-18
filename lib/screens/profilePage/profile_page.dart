@@ -3,14 +3,6 @@ import 'package:event_planner/customViews/CustomDivider.dart';
 import 'package:flutter/material.dart';
 import '../../customViews/CustomAppBars.dart';
 import '/../customViews/CustomPrimaryButton.dart';
-import '../../customViews/CustomDivider.dart';
-import '../createEvent/create_event.dart';
-import '../eventOtherDetails/other_details.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
-
-
-
 
 class ProfilePage extends StatefulWidget {
   @override

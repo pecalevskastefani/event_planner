@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:event_planner/customViews/CustomDivider.dart';
 import 'package:flutter/material.dart';
 import '../../customViews/CustomAppBars.dart';
@@ -8,7 +7,7 @@ import '../../customViews/CustomDivider.dart';
 import '../createEvent/create_event.dart';
 import '../eventOtherDetails/other_details.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 
 
 
@@ -30,9 +29,8 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
       isTextVisible = true;
     });
   }
-
+/*
   TextEditingController emailController = TextEditingController();
-
   void sendEmail() async {
     final String apiKey = 'af778b4b-ee14b6de';
     final String domain = 'sandboxd3ef07a0e1b747af9c2a8e5f1b313fa5.mailgun.org';
@@ -64,7 +62,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
       print('Error occurred while sending email. Status code: ${response.statusCode}');
     }
   }
-
+*/
 
   @override
   Widget build(BuildContext context) {
