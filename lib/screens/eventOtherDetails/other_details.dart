@@ -7,6 +7,11 @@ import '/../dataHolder/data_holder.dart';
 class OtherDetailsPage extends StatefulWidget {
   @override
   _OtherDetailsPageState createState() => _OtherDetailsPageState();
+
+  bool isCateringSelected() {
+    final state = _OtherDetailsPageState();
+    return state.isCateringSelected();
+  }
 }
 
 class _OtherDetailsPageState extends State<OtherDetailsPage> {
@@ -67,4 +72,14 @@ class _OtherDetailsPageState extends State<OtherDetailsPage> {
       bottomNavigationBar: CustomBottomAppBar(),
     );
   }
+
+  bool isCateringSelected(){
+    if (selectedCatering == 'Select')
+    {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
 }

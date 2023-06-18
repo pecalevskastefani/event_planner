@@ -11,6 +11,7 @@ import '../../customViews/CustomInputField.dart';
 class CreateEventPage extends StatefulWidget {
   @override
   _CreateEventPageState createState() => _CreateEventPageState();
+
 }
 
 class _CreateEventPageState extends State<CreateEventPage> {
@@ -159,4 +160,5 @@ class _CreateEventPageState extends State<CreateEventPage> {
       bottomNavigationBar: CustomBottomAppBar(),
     );
   }
+
 }

@@ -13,6 +13,7 @@ class CustomInputField extends StatefulWidget {
 
   @override
   _CustomInputFieldState createState() => _CustomInputFieldState();
+
 }
 class _CustomInputFieldState extends State<CustomInputField> {
   String _typedValue = '';
@@ -50,4 +51,5 @@ class _CustomInputFieldState extends State<CustomInputField> {
       ],
     );
   }
+
 }
