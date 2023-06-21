@@ -33,6 +33,4 @@ class DataHolder {
     'Band',
     'Dj',
   ];
-
-
 }
