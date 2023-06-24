@@ -1,3 +1,4 @@
+import 'package:event_planner/screens/authentication/login_page.dart';
 import 'package:event_planner/screens/eventDetails/event_details.dart';
 import 'package:flutter/material.dart';
 import 'customViews/CustomPrimaryButton.dart';
@@ -5,18 +6,30 @@ import 'screens/createEvent/create_event.dart';
 import 'screens//eventOtherDetails/other_details.dart';
 import 'screens/paymentDetails/payment_details.dart';
 import 'screens/profilePage/profile_page.dart';
-import 'screens/eventDetails/event_details.dart';
+import 'screens/authentication/register_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions( apiKey: "AIzaSyCzFpFNwuDDi9oDpI6cWF0AHD_oJKrSM5s",
+      appId: "1:473235424111:android:0cf31547e5b8ada50f9e9a",
+      messagingSenderId: "473235424111",
+      projectId: "eventplannerapp-11337", ), );
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/login_page',
       routes: {
+        '/login_page': (context) => LoginPage(),
+        '/register_page': (context) => RegisterPage(),
         '/': (context) => HomePage(),
         '/create_event': (context) => CreateEventPage(),
         '/other_details': (context) => OtherDetailsPage(),
