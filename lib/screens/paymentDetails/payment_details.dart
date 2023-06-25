@@ -103,7 +103,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      '30 dollars',
+                                      '30 \u0024',
                                       style: TextStyle(
                                           fontSize: 20.0,
                                           fontWeight: FontWeight.bold
@@ -154,7 +154,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                           if(isCateringSelected == true){
                                             //updateSum(30); tuka nikako nejke da proraboti
                                             return Text(
-                                                  '30',
+                                                  '30 \u0024',
                                                   style: TextStyle(
                                                       fontSize: 20.0,
                                                       fontWeight: FontWeight.bold
@@ -162,7 +162,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                                 );
                                           } else {
                                             return Text (
-                                                  '0',
+                                                  '0 \u0024',
                                                   style: TextStyle(
                                                       fontSize: 20.0,
                                                       fontWeight: FontWeight.bold
@@ -210,7 +210,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        '30 dolars',
+                                        '30 \u0024',
                                         style: TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold
@@ -255,7 +255,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        '30 dolars',
+                                        '30 \u0024',
                                         style: TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold
@@ -300,7 +300,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        '$sum dollars',
+                                        '$sum \u0024',
                                         style: TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold
