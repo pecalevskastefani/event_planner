@@ -28,22 +28,36 @@ class LoginPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20.0),
+            SizedBox(height: 30.0),
             Center(
-              child: Image.network(
-                'https://www.fftcaters.com/blog/wp-content/uploads/2021/10/Large-Event-Catering-Peach-Tree-City-1024x522.jpg',
+              child: Column(
+                children: [
+                Image.network(
+                'https://media.istockphoto.com/id/177854927/vector/wedding-and-event-planner.jpg?s=612x612&w=0&k=20&c=2Tx8egTIF-bn6bnrBE83TPZVMgAYCOf2LrC4Qk0Irdw=',
                 width: 200.0,
                 height: 200.0,
               ),
+              SizedBox(height: 15.0),
+              Text(
+                "Event Planner",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black45, // Light black color
+                  fontFamily: 'Roboto', // Replace with your desired font family
+                ),
+              ),
+              ]),
             ),
-        Text(
-          "Sign in",
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black.withOpacity(0.5), // Light black color
-            fontFamily: 'Roboto', // Replace with your desired font family
-          ),),
+            SizedBox(height: 15.0),
+            Text(
+              "Sign in",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87, // Light black color
+                fontFamily: 'Roboto', // Replace with your desired font family
+              ),),
             SizedBox(height: 5.0),
             Text(
               "Hi there! Nice to see you again.",
@@ -62,7 +76,7 @@ class LoginPage extends StatelessWidget {
               label: 'Password',
               controller: _passwordController,
             ),
-            SizedBox(height: 30.0),
+            SizedBox(height: 20.0),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -71,10 +85,9 @@ class LoginPage extends StatelessWidget {
                     text: 'Sign in',
                     onPressed: () async {
                       await _signInWithEmailAndPassword;
-
-    if ( _authGoogle.signedInUser != null || _auth.currentUser != null)  {
-      Navigator.pushNamed(context, '/');
-    }
+                      if ( _authGoogle.signedInUser != null || _auth.currentUser != null)  {
+                        Navigator.pushNamed(context, '/');
+                      }
                     },
                   ),
                   SizedBox(height: 10.0),
@@ -104,6 +117,7 @@ class LoginPage extends StatelessWidget {
                         "Forgot password?",
                         style: TextStyle(
                           fontSize: 16,
+                          fontWeight: FontWeight.bold,
                           color: Colors.black.withOpacity(0.5), // Light black color
                           fontFamily: 'Roboto', // Replace with your desired font family
                         ),),
@@ -116,7 +130,10 @@ class LoginPage extends StatelessWidget {
                         },
                         child: Text(
                           "Sign Up",
-                          style: TextStyle(fontSize: 16, color: Colors.pinkAccent),
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.pinkAccent),
                         ),
                       )
                     ],
