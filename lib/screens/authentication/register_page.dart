@@ -13,6 +13,7 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController _repeatPasswordController = TextEditingController();
 
   final AuthService _authService = AuthService();
+  bool _isChecked = false;
 
   Future<void> registerUser(BuildContext context) async {
     String name = _nameController.text.trim();
@@ -59,13 +60,13 @@ class RegisterPage extends StatelessWidget {
               Text(
                 "Sign Up",
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black87, // Light black color
                   fontFamily: 'Roboto',
                 ),
               ),
-              SizedBox(height: 25.0),
+              SizedBox(height: 20.0),
               CustomTextField(
                 labelText: 'Name',
                 controller: _nameController,
@@ -87,13 +88,65 @@ class RegisterPage extends StatelessWidget {
                 label: 'Repeat Password',
                 controller: _repeatPasswordController,
               ),
-              SizedBox(height: 50.0),
+              SizedBox(height: 20.0),
+              Row(
+                children: [
+                  Checkbox(
+                    value: _isChecked,
+                    onChanged: (bool? value) {
+                      _isChecked = value ?? false;
+                      // Add your desired logic when the checkbox state changes
+                    },
+                  ),
+                  Text(
+                    'I agree to the Terms of Services and \nPrivacy Policy.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black.withOpacity(0.5), // Light black color
+                      fontFamily: 'Roboto', // Replace with your desired font family
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20.0),
               Center(
-                child: CustomButton(
-                  text: 'Continue',
-                  onPressed: () => registerUser(context),
+                child: Column(
+                  children: [
+                    CustomButton(
+                      text: 'Continue',
+                      onPressed: () => registerUser(context),
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Have an Account? ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black.withOpacity(0.5), // Light black color
+                            fontFamily: 'Roboto', // Replace with your desired font family
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/login_page');
+                          },
+                          child: Text(
+                            "Sign In",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.pinkAccent,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
+
             ],
           ),
         ),
