@@ -2,6 +2,7 @@ import 'package:event_planner/screens/authentication/login_page.dart';
 import 'package:event_planner/screens/eventDetails/event_details.dart';
 import 'package:flutter/material.dart';
 import 'customViews/CustomPrimaryButton.dart';
+import 'models/event.dart';
 import 'screens/createEvent/create_event.dart';
 import 'screens//eventOtherDetails/other_details.dart';
 import 'screens/paymentDetails/payment_details.dart';
@@ -32,8 +33,8 @@ class MyApp extends StatelessWidget {
         '/register_page': (context) => RegisterPage(),
         '/': (context) => HomePage(),
         '/create_event': (context) => CreateEventPage(),
-        '/other_details': (context) => OtherDetailsPage(),
-        '/payment_details': (context) => PaymentDetailsPage(),
+        '/other_details': (context) => OtherDetailsPage(eventDetails: Event()),
+        '/payment_details': (context) => PaymentDetailsPage(eventDetails: Event()),
         '/profile_page': (context) => ProfilePage(),
         '/event_details': (context) => EventDetailsPage(),
       },

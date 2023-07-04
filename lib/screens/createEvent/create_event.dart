@@ -1,3 +1,4 @@
+import 'package:event_planner/screens/eventOtherDetails/other_details.dart';
 import 'package:flutter/material.dart';
 import '../../customViews/CustomAppBars.dart';
 import '../../customViews/CustomDatePicker.dart';
@@ -5,8 +6,11 @@ import '../../customViews/CustomDropdownField.dart';
 import '../../customViews/CustomPrimaryButton.dart';
 import '../../customViews/CustomTimePicker.dart';
 import '../../dataHolder/data_holder.dart';
+import '../../models/event.dart';
 import '../../utils/create_event_utils.dart';
 import '../../customViews/CustomInputField.dart';
+import '../paymentDetails/payment_details.dart';
+import 'package:intl/intl.dart';
 
 class CreateEventPage extends StatefulWidget {
   @override
@@ -15,13 +19,26 @@ class CreateEventPage extends StatefulWidget {
 }
 
 class _CreateEventPageState extends State<CreateEventPage> {
+  late String eventName;
   late String selectedEventType;
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
   String? selectedFilePath;
   var data = DataHolder();
   final TextEditingController _addressController = TextEditingController();
+  Map<String, dynamic> details = { 'selectedCatering': '0',
+                                   'selectedSweets': '0',
+                                   'selectedMusic': '0'};
 
+  Event setEvent(String name, String type, String date, String time, String location) {
+    return Event(
+        eventName: name,
+        eventDate: date,
+        eventTime: time,
+        eventType: type,
+        address: location
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -38,7 +55,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CustomInputField(title: 'Event Name', placeholder: 'Enter event name'),
+              CustomInputField(title: 'Event Name',
+                  placeholder: 'Enter event name',
+                  onChanged: (value) {
+                    eventName = value;
+                  }),
               CustomDropdownField(
                 labelText: 'Event Type',
                 options: data.eventTypes,
@@ -46,7 +67,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 onChanged: (value) {
                   setState(() {
                     if (value != null) {
-                     selectedEventType = value;
+                      selectedEventType = value;
                     }
                   });
                 },
@@ -86,12 +107,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   ),
                 ],
               ),
-            CustomInputField(
-            title: 'Location',
-            placeholder: 'Nikola Tesla 12, Skopje',
-            onChanged: (value) {
-              _addressController.text = value;
-            }),
+              CustomInputField(
+                  title: 'Location',
+                  placeholder: 'Nikola Tesla 12, Skopje',
+                  onChanged: (value) {
+                    _addressController.text = value;
+                  }),
               ElevatedButton(
                 onPressed: () => EventUtils.openMap(_addressController.text),
                 child: Text('Open Map'),
@@ -134,7 +155,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
               CustomButton(
                 text: 'OTHER DETAILS',
                 onPressed: () {
-                  Navigator.pushNamed(context, '/other_details');
+                  String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+                  String formattedTime = selectedTime.format(context);
+
+                  Event event = setEvent(eventName, selectedEventType, formattedDate, formattedTime, _addressController.text);
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OtherDetailsPage(eventDetails: event),
+                    ),
+                  );
                 },
               ),
               SizedBox(height: 10.0),
@@ -150,7 +181,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
               CustomButton(
                 text: 'FINISH',
                 onPressed: () {
-                  Navigator.pushNamed(context, '/payment_details');
+                  String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+                  String formattedTime = selectedTime.format(context);
+
+                  Event event = setEvent(eventName, selectedEventType, formattedDate, formattedTime, _addressController.text);
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentDetailsPage(eventDetails: event, selectedDetails: details),
+                    ),
+                  );
                 },
               ),
             ],
@@ -160,5 +201,4 @@ class _CreateEventPageState extends State<CreateEventPage> {
       bottomNavigationBar: CustomBottomAppBar(),
     );
   }
-
 }

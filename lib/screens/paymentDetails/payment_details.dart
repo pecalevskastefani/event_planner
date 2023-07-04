@@ -1,33 +1,46 @@
-import 'dart:convert';
 import 'package:event_planner/customViews/CustomDivider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../customViews/CustomAppBars.dart';
+import '/../customViews/CustomAppBars.dart';
+import '/../models/event.dart';
 import '/../customViews/CustomPrimaryButton.dart';
-import '../../customViews/CustomDivider.dart';
-import '../createEvent/create_event.dart';
-import '../eventOtherDetails/other_details.dart';
-import 'package:url_launcher/url_launcher.dart';
-//import 'package:http/http.dart' as http;
-
-
-
-
+import '../authentication/services/auth_service.dart';
+import '../authentication/services/auth_google_service.dart';
+import '/../services/event_service.dart';
 class PaymentDetailsPage extends StatefulWidget {
+  final Event eventDetails;
+  final  Map<String, dynamic> selectedDetails;
+
+  PaymentDetailsPage({
+    required this.eventDetails,
+    Map<String, dynamic>? selectedDetails,
+  }) : selectedDetails = selectedDetails ?? { 'selectedCatering': '0',
+    'selectedSweets': '0',
+    'selectedMusic': '0'};
   @override
   _PaymentDetailsPageState createState() => _PaymentDetailsPageState();
 
 }
 
 class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
-  OtherDetailsPage otherDetailsPage = OtherDetailsPage();
-  int sum = 30;
+  int sum = 50;
   bool isTextVisible = false;
+  final eventService = EventService();
+  User? user = AuthService().currentUser != null ? AuthService().currentUser : AuthGoogleService().signedInUser;
+  var catering;
+  var sweets;
+  var music;
 
-  void updateSum(int x){
-    setState(() {
-      sum += x;
-      isTextVisible = true;
-    });
+  void getTotalSum() {
+    sum = sum + int.parse(catering) + int.parse(sweets) + int.parse(music);
+  }
+  @override
+  void initState() {
+    super.initState();
+    catering = widget.selectedDetails['selectedCatering'];
+    sweets = widget.selectedDetails['selectedSweets'];
+    music = widget.selectedDetails['selectedMusic'];
+    getTotalSum();
   }
 /*
   TextEditingController emailController = TextEditingController();
@@ -103,7 +116,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      '30 \u0024',
+                                      '50',
                                       style: TextStyle(
                                           fontSize: 20.0,
                                           fontWeight: FontWeight.bold
@@ -150,25 +163,14 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                     children: [
                                       Builder(
                                         builder: (context){
-                                          bool isCateringSelected = otherDetailsPage.isCateringSelected();
-                                          if(isCateringSelected == true){
-                                            //updateSum(30); tuka nikako nejke da proraboti
-                                            return Text(
-                                                  '30 \u0024',
-                                                  style: TextStyle(
-                                                      fontSize: 20.0,
-                                                      fontWeight: FontWeight.bold
-                                                  ),
-                                                );
-                                          } else {
-                                            return Text (
-                                                  '0 \u0024',
-                                                  style: TextStyle(
-                                                      fontSize: 20.0,
-                                                      fontWeight: FontWeight.bold
-                                                  ),
-                                                );
-                                          }
+                                          //updateSum(30); tuka nikako nejke da proraboti
+                                          return Text(
+                                            catering != '0' ? catering : '0',
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                          );
                                         },
                                       ),]
                                 ))
@@ -210,7 +212,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        '30 \u0024',
+                                        sweets != '0' ? sweets : '0',
                                         style: TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold
@@ -255,7 +257,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        '30 \u0024',
+                                        music != '0' ? music : '0',
                                         style: TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold
@@ -300,7 +302,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        '$sum \u0024',
+                                        '$sum euros',
                                         style: TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold
@@ -319,10 +321,10 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
               CustomButton(
                 text: 'GET INVOICE',
                 onPressed: () {
+                  eventService.saveEventToFirebase(widget.eventDetails, sum, widget.selectedDetails);
                   Navigator.pushNamed(context, '/profile_page');
                 },
               ),
-
             ],
           ),
         ),
