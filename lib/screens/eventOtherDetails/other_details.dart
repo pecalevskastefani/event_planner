@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import '../paymentDetails/payment_details.dart';
+import '/../models/event.dart';
 import '/../customViews/CustomDropdownField.dart';
 import '/../customViews/CustomPrimaryButton.dart';
 import '/../customViews/CustomAppBars.dart';
 import '/../dataHolder/data_holder.dart';
 
 class OtherDetailsPage extends StatefulWidget {
+  final Event eventDetails;
+
+  OtherDetailsPage({required this.eventDetails});
+
   @override
   _OtherDetailsPageState createState() => _OtherDetailsPageState();
 
@@ -19,6 +25,11 @@ class _OtherDetailsPageState extends State<OtherDetailsPage> {
   String? selectedCatering;
   String? selectedSweets;
   String? selectedMusic;
+  Map<String, dynamic> details = { 'selectedCatering': '0',
+                                    'selectedSweets': '0',
+                                    'selectedMusic': '0'};
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +47,11 @@ class _OtherDetailsPageState extends State<OtherDetailsPage> {
               onChanged: (value) {
                 setState(() {
                   selectedCatering = value;
+                  if (selectedCatering == 'Select') {
+                    details['selectedCatering'] = '0';
+                  } else if(selectedCatering != null) {
+                    details['selectedCatering'] = '30';
+                  }
                 });
               },
             ),
@@ -46,6 +62,11 @@ class _OtherDetailsPageState extends State<OtherDetailsPage> {
               onChanged: (value) {
                 setState(() {
                   selectedSweets = value;
+                  if (selectedSweets == 'Select') {
+                    details['selectedSweets'] = '0';
+                  } else if(selectedSweets != null) {
+                    details['selectedSweets'] = '30';
+                  }
                 });
               },
             ),
@@ -56,6 +77,11 @@ class _OtherDetailsPageState extends State<OtherDetailsPage> {
               onChanged: (value) {
                 setState(() {
                   selectedMusic = value;
+                  if (selectedMusic == 'Select') {
+                    details['selectedMusic'] = '0';
+                  } else if(selectedMusic != null) {
+                    details['selectedMusic'] = '30';
+                  }
                 });
               },
             ),
@@ -63,7 +89,13 @@ class _OtherDetailsPageState extends State<OtherDetailsPage> {
             CustomButton(
               text: 'FINISH',
               onPressed: () {
-                Navigator.pushNamed(context, '/payment_details');
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PaymentDetailsPage(eventDetails: widget.eventDetails, selectedDetails: details),
+                  ),
+                );
               },
             ),
           ],
