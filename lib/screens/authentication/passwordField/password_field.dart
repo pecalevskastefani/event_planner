@@ -33,9 +33,6 @@ class _PasswordFieldState extends State<PasswordField> {
         TextField(
           controller: widget.controller,
           obscureText: _obscureText,
-          decoration: InputDecoration(
-            hintText: 'Enter $widget.label',
-          ),
         ),
       ],
     );
