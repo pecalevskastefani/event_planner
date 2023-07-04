@@ -15,7 +15,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Profile'),
+      appBar: CustomAppBar(title: 'Event Details'),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -64,7 +64,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                     ),
                   ]
               ),
-              SizedBox(height: 70),
+              SizedBox(height: 25),
 
               Row(
                 children: [
@@ -76,7 +76,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                         Row(
                             children: [
                               Text(
-                                'Past Events',
+                                'Active Event',
                                 style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold
@@ -105,37 +105,23 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Event Name 1',
+                                      'Event Name: Example',
                                       style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold
+                                          fontSize: 17.0,
                                       ),
                                     ),
                                   ] //children
                               ),
                             ),
-                            Expanded(
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      CustomButton(
-                                        text: 'View Details',
-                                        onPressed: () {
-                                          Navigator.pushNamed(context, '/create_event');
-                                        },
-                                      ),
-                                    ]
-                                ))
                           ],
                         )
                       ],
                     ),
                   ),
                 ],
-              ),
-              CustomDivider(color: Colors.grey, thickness: 2,),
+              ),//Name
+              CustomDivider(color: Colors.grey, thickness: 0.5,),
 
-              SizedBox(height: 45),
               Row(
                 children: [
                   SizedBox(height: 10.0),
@@ -150,42 +136,239 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Total',
+                                      'Event Typee: Example',
                                       style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold
+                                        fontSize: 17.0,
                                       ),
                                     ),
                                   ] //children
                               ),
                             ),
-                            Expanded(
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        'sum dollars',
-                                        style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                      ),]
-                                ))
                           ],
                         )
                       ],
                     ),
                   ),
                 ],
-              ),
-              CustomDivider(color: Colors.grey, thickness: 2,),
+              ),//Type
+              CustomDivider(color: Colors.grey, thickness: 0.5,),
 
-              CustomButton(
-                text: 'GET INVOICE',
-                onPressed: () {
-                  Navigator.pushNamed(context, '/create_event');
-                },
-              ),
+              Row(
+                children: [
+                  SizedBox(height: 10.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Location: Example',
+                                      style: TextStyle(
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ] //children
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),//Location
+              CustomDivider(color: Colors.grey, thickness: 0.5,),
+
+              Row(
+                children: [
+                  SizedBox(height: 10.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Date: Example',
+                                      style: TextStyle(
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ] //children
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),//Date
+              CustomDivider(color: Colors.grey, thickness: 0.5,),
+
+              Row(
+                children: [
+                  SizedBox(height: 10.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Time: Example',
+                                      style: TextStyle(
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ] //children
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),//Time
+              CustomDivider(color: Colors.grey, thickness: 0.5,),
+
+              Row(
+                children: [
+                  SizedBox(height: 10.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Number of guests: Example',
+                                      style: TextStyle(
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ] //children
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),//Number of guests
+              CustomDivider(color: Colors.grey, thickness: 0.5,),
+
+              Row(
+                children: [
+                  SizedBox(height: 10.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Catering: Example',
+                                      style: TextStyle(
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ] //children
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),//Catering
+              CustomDivider(color: Colors.grey, thickness: 0.5,),
+
+              Row(
+                children: [
+                  SizedBox(height: 10.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Sweets: Example',
+                                      style: TextStyle(
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ] //children
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),//Sweets
+              CustomDivider(color: Colors.grey, thickness: 0.5,),
+
+              Row(
+                children: [
+                  SizedBox(height: 10.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Music: Example',
+                                      style: TextStyle(
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ] //children
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),//Music
+              CustomDivider(color: Colors.grey, thickness: 0.5,),
             ],
           ),
         ),
