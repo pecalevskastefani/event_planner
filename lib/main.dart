@@ -1,16 +1,15 @@
 import 'package:event_planner/screens/authentication/login_page.dart';
+import 'package:event_planner/screens/authentication/forgot_password_page.dart';
 import 'package:event_planner/screens/eventDetails/event_details.dart';
 import 'package:flutter/material.dart';
 import 'customViews/CustomPrimaryButton.dart';
 import 'models/event.dart';
 import 'screens/createEvent/create_event.dart';
-import 'screens//eventOtherDetails/other_details.dart';
+import 'screens/eventOtherDetails/other_details.dart';
 import 'screens/paymentDetails/payment_details.dart';
 import 'screens/profilePage/profile_page.dart';
 import 'screens/authentication/register_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +30,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login_page': (context) => LoginPage(),
         '/register_page': (context) => RegisterPage(),
+        '/forgot_password_page': (context) => ForgotPasswordPage(),
         '/': (context) => HomePage(),
         '/create_event': (context) => CreateEventPage(),
         '/other_details': (context) => OtherDetailsPage(eventDetails: Event()),
