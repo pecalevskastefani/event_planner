@@ -1,58 +1,84 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../models/user.dart';
 import '/models/event.dart';
 import '/screens/authentication/services/auth_service.dart';
 
 class ProfileService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Future<UserApp?> getProfileDetails() async {
+    String? userId = await AuthService().getCurrentUserId();
+    if (userId != null) {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
 
-  User? get currentUser => _auth.currentUser;
-  AuthService _authService = AuthService();
+      if (userSnapshot.exists) {
+        Map<String, dynamic> userData = userSnapshot.data() as Map<
+            String,
+            dynamic>;
 
-  Future<List<Event>>? getUserEvents() async {
-    String? userId = await _authService.getCurrentUserId();
+        String email = userData["email"];
+        String name = userData['name'];
+        String surname = userData['surname'];
+
+        UserApp userDetails = UserApp(email: email, name: name, surname: surname);
+        if (userDetails != null ) {
+          return userDetails;
+        }
+        return null;
+      }
+    }
+  }
+
+  Future<List<Event>> getUserEvents() async {
+    String? userId = AuthService().currentUser?.uid;
     List<Event> userEvents = [];
 
     if (userId != null) {
-      QuerySnapshot eventsSnapshot = await _firestore
+      QuerySnapshot eventsSnapshot = await FirebaseFirestore.instance
           .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .doc(userId)
           .collection('events')
           .get();
 
-      if (eventsSnapshot.size > 0) {
-        // Iterate through the documents in the collection
-        eventsSnapshot.docs.forEach((DocumentSnapshot documentSnapshot) async {
-          if (documentSnapshot.exists) {
-            Map<String, dynamic>? eventData = documentSnapshot.data() as Map<String, dynamic>?;
+      List<String> eventRefs = [];
+      eventsSnapshot.docs.forEach((DocumentSnapshot documentSnapshot) {
+        String eventData = documentSnapshot.data().toString();
 
-            if (eventData != null) {
-              String eventKey = documentSnapshot.reference.id; // Use the document ID as the event key
-              print(eventKey);
-              String eventId = eventKey.split('/')[2];
+        if (eventData != null) {
+          eventRefs.add(eventData);
+        }
+      });
 
-              DocumentReference eventRef = _firestore.collection('events').doc(eventId);
-              DocumentSnapshot eventSnapshot = await eventRef.get();
-              if (eventSnapshot.exists) {
-                Map<String, dynamic>? eventEventData = eventSnapshot.data() as Map<String, dynamic>?;
+      List<Future<DocumentSnapshot>> eventFutures = eventRefs.map((eventData) {
+        String eventDataString = eventData.split('/')[1];
+        String eventId = eventDataString.substring(0, eventDataString.length - 2);
+        return FirebaseFirestore.instance.collection('events').doc(eventId).get();
+      }).toList();
 
-                if (eventEventData != null) {
-                  Event event = Event(
-                    eventName: eventEventData['eventName'] ?? 'Default',
-                    // Add other event properties as needed
-                  );
-                  userEvents.add(event);
-                }
-              } else {
-                print('Event document does not exist');
-              }
-            }
-          } else {
-            print("The collection is empty");
+      List<DocumentSnapshot> eventSnapshots = await Future.wait(eventFutures);
+
+      eventSnapshots.forEach((DocumentSnapshot eventSnapshot) {
+        if (eventSnapshot.exists) {
+          Map<String, dynamic>? eventData = eventSnapshot.data() as Map<
+              String,
+              dynamic>?;
+
+          if (eventData != null) {
+            Event event = Event(
+              eventName: eventData['eventName'],
+              eventType: eventData['eventType'],
+              eventDate: eventData['eventDate'],
+              eventTime: eventData['eventTime'],
+              address: eventData['location'],
+            );
+            userEvents.add(event);
           }
-        });
-      }
+        } else {
+          print("Event document does not exist");
+        }
+      });
     }
 
     return userEvents;

@@ -1,4 +1,5 @@
 import 'package:event_planner/customViews/CustomDivider.dart';
+import 'package:event_planner/models/user.dart';
 import 'package:flutter/material.dart';
 import '../../customViews/CustomAppBars.dart';
 import '../../services/profile_service.dart';
@@ -16,11 +17,23 @@ class _ProfilePageState extends State<ProfilePage> {
   ProfileService _profileService = ProfileService();
 
   Future<List<Event>>? userEvents;
+  late UserApp user;
+  String initials = "";
 
   @override
   void initState() {
     super.initState();
     userEvents = _profileService.getUserEvents();
+    _profileService.getProfileDetails().then((UserApp? userDetails) {
+      if (userDetails != null) {
+        setState(() {
+          user = userDetails;
+          initials = user.name.substring(0, 1) + user.surname.substring(0, 1);
+        });
+      } else {
+        user = UserApp(email: "not set", name: "Example", surname: "Example");
+      }
+    });
   }
 
   @override
@@ -50,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: Center(
                       child: Text(
-                        'Example',
+                        initials != null ? initials.toUpperCase() : "Example",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
@@ -67,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Name and Surname',
+                      user.name + " " + user.surname,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16.0,

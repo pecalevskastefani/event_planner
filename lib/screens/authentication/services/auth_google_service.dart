@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -8,7 +7,6 @@ class AuthGoogleService {
   User? signedInUser;
   Future<void> signInWithGoogle() async  {
     try {
-      // Trigger the Gmail sign-in flow
       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
