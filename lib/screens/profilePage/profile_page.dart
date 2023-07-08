@@ -1,8 +1,11 @@
-import 'dart:convert';
 import 'package:event_planner/customViews/CustomDivider.dart';
+import 'package:event_planner/models/user.dart';
 import 'package:flutter/material.dart';
 import '../../customViews/CustomAppBars.dart';
+import '../../services/profile_service.dart';
 import '/../customViews/CustomPrimaryButton.dart';
+import '/models/event.dart';
+
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -11,6 +14,27 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  ProfileService _profileService = ProfileService();
+
+  Future<List<Event>>? userEvents;
+  late UserApp user;
+  String initials = "";
+
+  @override
+  void initState() {
+    super.initState();
+    userEvents = _profileService.getUserEvents();
+    _profileService.getProfileDetails().then((UserApp? userDetails) {
+      if (userDetails != null) {
+        setState(() {
+          user = userDetails;
+          initials = user.name.substring(0, 1) + user.surname.substring(0, 1);
+        });
+      } else {
+        user = UserApp(email: "not set", name: "Example", surname: "Example");
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: Center(
                       child: Text(
-                        'Example',
+                        initials != null ? initials.toUpperCase() : "Example",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
@@ -53,90 +77,20 @@ class _ProfilePageState extends State<ProfilePage> {
 
               SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Name and Surname',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      user.name + " " + user.surname,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ]
-               ),//row ime prezime pod slika
+                  ]
+              ),//row ime prezime pod slika
               SizedBox(height: 70),
 
-              Row(
-                children: [
-                  SizedBox(height: 10.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Active Events',
-                              style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ]
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),//row active events
-              CustomDivider(color: Colors.grey, thickness: 2,),
-
-              Row(
-                children: [
-                  SizedBox(height: 10.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Event Name 1',
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                  ] //children
-                              ),
-                            ),
-                            Expanded(
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      CustomButton(
-                                        text: 'View Details',
-                                        onPressed: () {
-                                          Navigator.pushNamed(context, '/event_details');
-                                        },
-                                      ),
-                                    ]
-                                ))
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),//row eventi pod active
-              CustomDivider(color: Colors.grey, thickness: 0.5,),
-
-              SizedBox(height: 70),
               Row(
                 children: [
                   SizedBox(height: 10.0),
@@ -147,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                             children: [
                               Text(
-                                'Past Events',
+                                'Created Events',
                                 style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold
@@ -159,52 +113,75 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ],
-              ),//row past events
-              CustomDivider(color: Colors.grey, thickness: 2,),
-
-              Row(
-                children: [
-                  SizedBox(height: 10.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Event Name 1',
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                  ] //children
-                              ),
-                            ),
-                            Expanded(
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      CustomButton(
-                                        text: 'View Details',
-                                        onPressed: () {
-                                          Navigator.pushNamed(context, '/event_details');
-                                        },
-                                      ),
-                                    ]
-                                ))
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),//row eventi pod past
+              ),//row active events
               CustomDivider(color: Colors.grey, thickness: 0.5,),
+
+
+              FutureBuilder<List<Event>>(
+                future: userEvents,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (snapshot.hasData) {
+                    List<Event>? events = snapshot.data;
+                    if (events != null && events.isNotEmpty) {
+                      return Column(
+                        children: events.map((event) =>
+                            Row(
+                              children: [
+                                SizedBox(height: 10.0),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  event.eventName,
+                                                  style: TextStyle(
+                                                      fontSize: 20.0,
+                                                      fontWeight: FontWeight.bold
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                CustomButton(
+                                                  text: 'View Details',
+                                                  onPressed: () {
+                                                    Navigator.pushNamed(
+                                                        context, '/event_details');
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ).toList(),
+                      );
+                    }
+                  } else {
+                    return Text('No events found.');
+                  }
+                  return Text('No data found');
+                },
+              ),
             ],
           ),
         ),
