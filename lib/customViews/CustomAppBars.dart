@@ -34,20 +34,22 @@ class CustomBottomAppBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              // Add functionality for notes icon
-              // Customize the behavior when the notes icon is pressed
-            },
+              Navigator.pushNamed(
+                context,
+                '/',
+              );},
             icon: Icon(
-              Icons.notes,
+              Icons.home,
               size: 40.0,
               color: Colors.pinkAccent,
             ),
           ),
           IconButton(
             onPressed: () {
-              // Add functionality for profile icon
-              // Customize the behavior when the profile icon is pressed
-            },
+              Navigator.pushNamed(
+                  context,
+                  '/profile_page',
+              );},
             icon: Icon(
               Icons.person,
               size: 40.0,

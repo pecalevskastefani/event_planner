@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:event_planner/customViews/CustomDivider.dart';
 import 'package:flutter/material.dart';
 import '../../../customViews/CustomAppBars.dart';
-import '/../customViews/CustomPrimaryButton.dart';
+import '../../models/event.dart';
+import '../../models/user.dart';
+import '../../services/profile_service.dart';
 
 class EventDetailsPage extends StatefulWidget {
   @override
@@ -11,9 +13,30 @@ class EventDetailsPage extends StatefulWidget {
 }
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
+  ProfileService _profileService = ProfileService();
+
+  late UserApp user;
+  String initials = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _profileService.getProfileDetails().then((UserApp? userDetails) {
+      if (userDetails != null) {
+        setState(() {
+          user = userDetails;
+          initials = user.name.substring(0, 1) + user.surname.substring(0, 1);
+        });
+      } else {
+        user = UserApp(email: "not set", name: "Example", surname: "Example");
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final event = ModalRoute.of(context)?.settings.arguments as Event;
+
     return Scaffold(
       appBar: CustomAppBar(title: 'Event Details'),
       body: SingleChildScrollView(
@@ -39,7 +62,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                     ),
                     child: Center(
                       child: Text(
-                        'Example',
+                        initials != null ? initials.toUpperCase() : "Example",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
@@ -55,7 +78,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Name and Surname',
+                      user.name + " " + user.surname,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16.0,
@@ -105,7 +128,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Event Name: Example',
+                                      'Event Name: ' + (event.eventName ?? '/'),
                                       style: TextStyle(
                                           fontSize: 17.0,
                                       ),
@@ -136,7 +159,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Event Typee: Example',
+                                      'Event Type: '+ (event.eventType ?? '/'),
                                       style: TextStyle(
                                         fontSize: 17.0,
                                       ),
@@ -167,7 +190,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Location: Example',
+                                      'Location: '+ (event.address ?? '/'),
                                       style: TextStyle(
                                         fontSize: 17.0,
                                       ),
@@ -198,7 +221,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Date: Example',
+                                      'Date: '+ (event.eventDate ?? '/'),
                                       style: TextStyle(
                                         fontSize: 17.0,
                                       ),
@@ -229,7 +252,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Time: Example',
+                                      'Time: '+ (event.eventTime ?? '/'),
                                       style: TextStyle(
                                         fontSize: 17.0,
                                       ),
@@ -260,7 +283,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Number of guests: Example',
+                                      'Catering: '+ (event.cateringPrice ?? '/'),
                                       style: TextStyle(
                                         fontSize: 17.0,
                                       ),
@@ -291,7 +314,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Catering: Example',
+                                      'Sweets: '+ (event.sweetsPrice ?? '/'),
                                       style: TextStyle(
                                         fontSize: 17.0,
                                       ),
@@ -322,7 +345,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Sweets: Example',
+                                      'Music: '+ (event.musicPrice ?? '/'),
                                       style: TextStyle(
                                         fontSize: 17.0,
                                       ),
@@ -353,7 +376,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Music: Example',
+                                      'Total price: '+ (event.totalPrice.toString()) + ' euros',
                                       style: TextStyle(
                                         fontSize: 17.0,
                                       ),
