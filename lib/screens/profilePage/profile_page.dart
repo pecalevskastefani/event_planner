@@ -160,7 +160,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   text: 'View Details',
                                                   onPressed: () {
                                                     Navigator.pushNamed(
-                                                        context, '/event_details');
+                                                        context,
+                                                        '/event_details',
+                                                        arguments: event,
+                                                    );
                                                   },
                                                 ),
                                               ],

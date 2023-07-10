@@ -7,7 +7,7 @@ class Event {
   late final String? cateringPrice;
   late final String? sweetsPrice;
   late final String? musicPrice;
-  late final String totalPrice;
+  late final int totalPrice;
 
   Event({ this.eventName = "",
     this.eventType = "",
@@ -17,5 +17,5 @@ class Event {
     this.cateringPrice = "",
     this.sweetsPrice = "",
     this.musicPrice = "",
-    this.totalPrice = ""});
+    this.totalPrice = 0});
 }
