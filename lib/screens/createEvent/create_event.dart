@@ -12,6 +12,7 @@ import '../../customViews/CustomInputField.dart';
 import '../paymentDetails/payment_details.dart';
 import 'package:intl/intl.dart';
 
+
 class CreateEventPage extends StatefulWidget {
   @override
   _CreateEventPageState createState() => _CreateEventPageState();
@@ -142,7 +143,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 ),
               ),
               SizedBox(height: 10.0),
-              CustomInputField(title: 'Invite friends', placeholder: "Select contacts"),
               Text(
                 'Whant to see what we offer more?',
                 style: TextStyle(
