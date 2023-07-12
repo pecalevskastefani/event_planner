@@ -1,5 +1,6 @@
 import 'package:event_planner/customViews/CustomDivider.dart';
 import 'package:event_planner/models/user.dart';
+import 'package:event_planner/screens/authentication/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../../customViews/CustomAppBars.dart';
 import '../../services/profile_service.dart';
@@ -14,26 +15,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  ProfileService _profileService = ProfileService();
+  AuthService _profileService = AuthService();
 
   Future<List<Event>>? userEvents;
-  late UserApp user;
-  String initials = "";
+  String? initials = "";
+  String? nameAndSurname = "";
+
+  void getDetails() async {
+    nameAndSurname = await _profileService.getProfileDetails();
+    var splitedString = nameAndSurname?.split(" ");
+    if (splitedString!=null) {
+      print("name");
+      print(nameAndSurname);
+      initials = splitedString[0].substring(0, 1) + splitedString[1].substring(0, 1);
+    }
+  }
 
   @override
   void initState() {
-    super.initState();
-    userEvents = _profileService.getUserEvents();
-    _profileService.getProfileDetails().then((UserApp? userDetails) {
-      if (userDetails != null) {
-        setState(() {
-          user = userDetails;
-          initials = user.name.substring(0, 1) + user.surname.substring(0, 1);
-        });
-      } else {
-        user = UserApp(email: "not set", name: "Example", surname: "Example");
-      }
-    });
+    getDetails();
   }
 
   @override
@@ -63,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: Center(
                       child: Text(
-                        initials != null ? initials.toUpperCase() : "Example",
+                        initials!.toUpperCase(),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
@@ -80,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      user.name + " " + user.surname,
+                      nameAndSurname!,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16.0,
@@ -88,7 +88,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ]
-              ),//row ime prezime pod slika
+              ),
+              //row ime prezime pod slika
               SizedBox(height: 70),
 
               Row(

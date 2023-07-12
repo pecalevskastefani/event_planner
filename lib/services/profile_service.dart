@@ -5,34 +5,10 @@ import '/models/event.dart';
 import '/screens/authentication/services/auth_service.dart';
 
 class ProfileService {
-  Future<UserApp?> getProfileDetails() async {
-    String? userId = await AuthService().getCurrentUserId();
-    if (userId != null) {
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .get();
-
-      if (userSnapshot.exists) {
-        Map<String, dynamic> userData = userSnapshot.data() as Map<
-            String,
-            dynamic>;
-
-        String email = userData["email"];
-        String name = userData['name'];
-        String surname = userData['surname'];
-
-        UserApp userDetails = UserApp(email: email, name: name, surname: surname);
-        if (userDetails != null ) {
-          return userDetails;
-        }
-        return null;
-      }
-    }
-  }
-
+  final AuthService _authService = AuthService();
   Future<List<Event>> getUserEvents() async {
-    String? userId = AuthService().currentUser?.uid;
+    String? userId = _authService.currentUser?.uid;
+    print(userId);
     List<Event> userEvents = [];
 
     if (userId != null) {

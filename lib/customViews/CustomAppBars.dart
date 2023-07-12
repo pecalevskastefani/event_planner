@@ -1,3 +1,4 @@
+import 'package:event_planner/screens/profilePage/profile_page.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -34,10 +35,8 @@ class CustomBottomAppBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/',
-              );},
+              Navigator.pushNamed(context, "/create_event");
+            },
             icon: Icon(
               Icons.home,
               size: 40.0,
@@ -46,10 +45,8 @@ class CustomBottomAppBar extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(
-                  context,
-                  '/profile_page',
-              );},
+              Navigator.pushNamed(context, "/profile_page");
+            },
             icon: Icon(
               Icons.person,
               size: 40.0,

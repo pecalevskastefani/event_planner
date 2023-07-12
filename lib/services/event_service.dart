@@ -3,11 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '/screens/authentication/services/auth_service.dart';
 
 class EventService {
+  final AuthService _auth = AuthService();
   void saveEventToFirebase(
       Event selectedEvent, int sum,  Map<String, dynamic> selectedDetails
       ) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    String? userId = await AuthService().getCurrentUserId();
+    String? userId = await _auth.getCurrentUserId();
+    print(userId);
     DocumentReference eventRef = firestore.collection('events').doc();
 
     Map<String, dynamic> eventData = {
