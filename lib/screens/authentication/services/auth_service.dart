@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '/../../models/user.dart';
+
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -28,7 +30,6 @@ class AuthService {
 
       await userCredential.user!.updateDisplayName(name);
 
-      //  Saving to Firestore
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userCredential.user!.uid)
@@ -57,11 +58,34 @@ class AuthService {
     }
   }
 
+
   Future<void> signOut() async {
     try {
       await _auth.signOut();
     } catch (e) {
       print('Sign out failed: $e');
+    }
+  }
+
+
+  Future<String?> getProfileDetails() async {
+    print(_auth.currentUser);
+    if (_auth.currentUser != null) {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_auth.currentUser?.uid)
+          .get();
+
+      if (userSnapshot.exists) {
+        Map<String, dynamic> userData = userSnapshot.data() as Map<
+            String,
+            dynamic>;
+
+        String name = userData['name'];
+        String surname = userData['surname'];
+        return name+" " +surname;
+      }
+      return "";
     }
   }
 }

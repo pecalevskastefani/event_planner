@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:event_planner/screens/authentication/login_page.dart';
 import 'package:event_planner/screens/eventDetails/event_details.dart';
 import 'package:flutter/material.dart';
@@ -14,15 +15,18 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final cameras = await availableCameras();
   await Firebase.initializeApp(
     options: const FirebaseOptions( apiKey: "AIzaSyCzFpFNwuDDi9oDpI6cWF0AHD_oJKrSM5s",
       appId: "1:473235424111:android:0cf31547e5b8ada50f9e9a",
       messagingSenderId: "473235424111",
       projectId: "eventplannerapp-11337", ), );
-  runApp(MyApp());
+  runApp(MyApp(cameras: cameras));
 }
 
 class MyApp extends StatelessWidget {
+  final List<CameraDescription> cameras;
+  const MyApp({required this.cameras});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,7 @@ class MyApp extends StatelessWidget {
         '/login_page': (context) => LoginPage(),
         '/register_page': (context) => RegisterPage(),
         '/': (context) => HomePage(),
-        '/create_event': (context) => CreateEventPage(),
+        '/create_event': (context) => CreateEventPage(cameras: cameras),
         '/other_details': (context) => OtherDetailsPage(eventDetails: Event()),
         '/payment_details': (context) => PaymentDetailsPage(eventDetails: Event()),
         '/profile_page': (context) => ProfilePage(),
@@ -45,6 +49,7 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,

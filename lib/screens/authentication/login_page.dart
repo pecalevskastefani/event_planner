@@ -1,5 +1,7 @@
 import 'package:event_planner/customViews/CustomTextField.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../customViews/CustomPrimaryButton.dart';
+import '../../services/profile_service.dart';
 import 'services/auth_service.dart';
 import 'passwordField/password_field.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +12,14 @@ class LoginPage extends StatelessWidget {
   final AuthService _auth = AuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  User? user;
   void _signInWithEmailAndPassword() async {
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
-      await _auth.signIn(email, password);
+      print("current");
+      print(_auth.currentUser?.uid);
+      user = await _auth.signIn(email, password);
+      print(user);
     }
 
   @override
@@ -84,8 +89,8 @@ class LoginPage extends StatelessWidget {
                   CustomButton(
                     text: 'Sign in',
                     onPressed: () async {
-                      await _signInWithEmailAndPassword;
-                      if ( _authGoogle.signedInUser != null || _auth.currentUser != null)  {
+                      _signInWithEmailAndPassword();
+                      if ( _authGoogle.signedInUser != null || user != null)  {
                         Navigator.pushNamed(context, '/');
                       }
                     },
