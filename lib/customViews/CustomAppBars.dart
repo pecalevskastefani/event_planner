@@ -38,7 +38,7 @@ class CustomBottomAppBar extends StatelessWidget {
               Navigator.pushNamed(context, "/create_event");
             },
             icon: Icon(
-              Icons.notes,
+              Icons.home,
               size: 40.0,
               color: Colors.pinkAccent,
             ),

@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 
+
 class CreateEventPage extends StatefulWidget {
   final List<CameraDescription> cameras;
 
@@ -191,10 +192,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 ],
               ),
               SizedBox(height: 10.0),
-              CustomInputField(
-                title: 'Invite friends',
-                placeholder: 'Select contacts',
-              ),
               Text(
                 'Want to see what else we offer?',
                 style: TextStyle(

@@ -7,6 +7,8 @@ import '/../customViews/CustomPrimaryButton.dart';
 import '../authentication/services/auth_service.dart';
 import '../authentication/services/auth_google_service.dart';
 import '/../services/event_service.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 class PaymentDetailsPage extends StatefulWidget {
   final Event eventDetails;
   final  Map<String, dynamic> selectedDetails;
@@ -19,10 +21,10 @@ class PaymentDetailsPage extends StatefulWidget {
     'selectedMusic': '0'};
   @override
   _PaymentDetailsPageState createState() => _PaymentDetailsPageState();
-
 }
 
 class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
+  late TextEditingController emailController;
   int sum = 50;
   bool isTextVisible = false;
   final eventService = EventService();
@@ -37,45 +39,39 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
   @override
   void initState() {
     super.initState();
+    emailController = TextEditingController();
     catering = widget.selectedDetails['selectedCatering'];
     sweets = widget.selectedDetails['selectedSweets'];
     music = widget.selectedDetails['selectedMusic'];
     getTotalSum();
   }
-/*
-  TextEditingController emailController = TextEditingController();
-  void sendEmail() async {
-    final String apiKey = 'af778b4b-ee14b6de';
-    final String domain = 'sandboxd3ef07a0e1b747af9c2a8e5f1b313fa5.mailgun.org';
-    final String recipientEmail = emailController.text.trim();
-    final String senderEmail = 'ana.pejovska@students.finki.ukim.mk';
 
-    final Uri uri = Uri.parse('https://api.mailgun.net/v3/$domain/messages');
+  void sendEmail(String recipientEmail, Event event) async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: recipientEmail,
+      query: 'subject=Invitation%20for%20my%20event!!&body=Event Name: '+event.eventName+
+          '\n Event Type: '+ event.eventType +
+          '\n Event Date: '+ event.eventDate +
+          '\n Event Time: '+ event.eventTime +
+          '\n Event Location: '+ event.address
+    );
 
-    final String username = 'api';
-    final String password = apiKey;
-    final String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
+    final String url = params.toString();
 
-    final Map<String, String> headers = {
-      'Authorization': basicAuth,
-    };
-
-    final Map<String, dynamic> data = {
-      'from': senderEmail,
-      'to': recipientEmail,
-      'subject': 'Hello from EventApp',
-      'text': 'This is an automated email sent from EventApp.',
-    };
-
-    final response = await http.post(uri, headers: headers, body: data);
-
-    if (response.statusCode == 200) {
-      print('Email sent successfully');
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
-      print('Error occurred while sending email. Status code: ${response.statusCode}');
+      throw 'Could not launch $url';
     }
   }
-*/
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +159,6 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                                     children: [
                                       Builder(
                                         builder: (context){
-                                          //updateSum(30); tuka nikako nejke da proraboti
                                           return Text(
                                             catering != '0' ? catering : '0',
                                             style: TextStyle(
@@ -318,6 +313,24 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
               ),
               CustomDivider(color: Colors.grey, thickness: 2,),
 
+              TextField(
+                style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold
+                ),
+                controller: emailController,
+                decoration: InputDecoration(
+                  labelText: 'Recipient e-mail',
+                ),
+              ),
+              SizedBox(height: 10.0),
+              CustomButton(
+                  text: 'SEND INVITATION',
+                  onPressed: () {
+                    sendEmail(emailController.text.trim(), widget.eventDetails);
+                },
+              ),
+              SizedBox(height: 10.0),
               CustomButton(
                 text: 'GET INVOICE',
                 onPressed: () {

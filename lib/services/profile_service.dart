@@ -48,6 +48,10 @@ class ProfileService {
               eventDate: eventData['eventDate'],
               eventTime: eventData['eventTime'],
               address: eventData['location'],
+              musicPrice: eventData['musicPrice'],
+              cateringPrice: eventData['cateringPrice'],
+              sweetsPrice: eventData['sweetsPrice'],
+              totalPrice: eventData['totalPrice'],
             );
             userEvents.add(event);
           }
