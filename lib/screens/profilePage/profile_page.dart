@@ -63,7 +63,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: Center(
                       child: Text(
-                        initials!.toUpperCase(),
+                        //initials!.toUpperCase(),
+                        'E9',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
@@ -80,7 +81,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      nameAndSurname!,
+                      'Example 9',
+                      //nameAndSurname!,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16.0,
@@ -116,7 +118,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),//row active events
               CustomDivider(color: Colors.grey, thickness: 0.5,),
-
 
               FutureBuilder<List<Event>>(
                 future: userEvents,
