@@ -5,6 +5,7 @@ import '../../../customViews/CustomAppBars.dart';
 import '../../models/event.dart';
 import '../../models/user.dart';
 import '../../services/profile_service.dart';
+import '../authentication/services/auth_service.dart';
 
 class EventDetailsPage extends StatefulWidget {
   @override
@@ -13,24 +14,26 @@ class EventDetailsPage extends StatefulWidget {
 }
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
-  ProfileService _profileService = ProfileService();
+  AuthService _profileService = AuthService();
 
   late UserApp user;
-  String initials = "";
+  String? initials = "";
+  String? nameAndSurname = "";
+
+  void getDetails() async {
+    nameAndSurname = await _profileService.getProfileDetails();
+    var splitedString = nameAndSurname?.split(" ");
+    if (splitedString!=null) {
+      print("name");
+      print(nameAndSurname);
+      initials = splitedString[0].substring(0, 1) + splitedString[1].substring(0, 1);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _profileService.getProfileDetails().then((UserApp? userDetails) {
-      if (userDetails != null) {
-        setState(() {
-          user = userDetails;
-          initials = user.name.substring(0, 1) + user.surname.substring(0, 1);
-        });
-      } else {
-        user = UserApp(email: "not set", name: "Example", surname: "Example");
-      }
-    });
+    getDetails();
   }
 
   @override
@@ -62,7 +65,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                     ),
                     child: Center(
                       child: Text(
-                        initials != null ? initials.toUpperCase() : "Example",
+                        initials!.toUpperCase(),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16.0,
